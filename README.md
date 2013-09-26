@@ -1,6 +1,6 @@
 iOS Barcode Scanner
 
-A simple, fast iOS barcode scanner - supports iOS5.0+ - iOS7
+A simple, fast iOS barcode scanner: supports iOS5 - iOS7
 
 Combining two great projects in GPUImage and ZXingObjC this project creates a barcode scanner that is fast, simple and completely open source.
 
