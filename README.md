@@ -6,8 +6,9 @@ Combining two great projects in GPUImage and ZXingObjC this project creates a ba
 
 Thanks to:
 
-https://github.com/BradLarson/GPUImage
-https://github.com/TheLevelUp/ZXingObjC
+ - https://github.com/BradLarson/GPUImage
+ - https://github.com/TheLevelUp/ZXingObjC
+
 
 To use in your project simply add the above frameworks to your project and copy the ARScanViewController.h,m,xib to your project.
 
