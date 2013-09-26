@@ -49,6 +49,7 @@
         
         self.imageView = [[GPUImageView alloc] initWithFrame:self.view.frame];
         [self.view addSubview:self.imageView];
+        [self.view sendSubviewToBack:self.imageView];
         
         [self.filter addTarget:self.imageView];
         
@@ -96,18 +97,28 @@
                     //ZXBarcodeFormat format = result.barcodeFormat;
                     
                     NSString* contents = result.text;
+                    NSURL *url = [NSURL URLWithString:contents];
                     
-                    if ([NSURL URLWithString:contents]) {
-                        [weakSelf openInSafari:contents];
+                    BOOL validURL = [[UIApplication sharedApplication] canOpenURL:url];
+                    
+                    if (validURL) {
+                        [weakSelf openInSafari:url];
                     }
+                    
+                    [weakSelf.stillCamera stopCameraCapture];
+                    [weakSelf.timer invalidate];
+                    weakSelf.timer = nil;
                     
                     dispatch_sync(dispatch_get_main_queue(), ^{
                         
                         [weakSelf dismissViewControllerAnimated:YES completion:^(void) {
   
-                            if (![NSURL URLWithString:contents]) {
+                            if (!validURL) {
                                 
-                                UIAlertView *av = [[UIAlertView alloc ]initWithTitle:@"Found!" message:contents delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil];
+                                UIPasteboard *pb = [UIPasteboard generalPasteboard];
+                                [pb setString:contents];
+                                
+                                UIAlertView *av = [[UIAlertView alloc ]initWithTitle:@"Success!" message:[NSString stringWithFormat:@"Would you like to copy this barcode: %@",contents] delegate:nil cancelButtonTitle:@"NO" otherButtonTitles:@"YES",nil];
                                 [av show];
                                 
                             }
@@ -115,10 +126,7 @@
                         }];
                         
                     });
-                    
-                    [weakSelf.stillCamera stopCameraCapture];
-                    [weakSelf.timer invalidate];
-                    weakSelf.timer = nil;
+                
                     
                 }
 
@@ -129,8 +137,20 @@
 
 }
 
-- (void)openInSafari:(NSString *) url {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+- (void)openInSafari:(NSURL *) url {
+    [[UIApplication sharedApplication] openURL:url];
+}
+
+- (IBAction)closeView {
+    
+    [self.stillCamera stopCameraCapture];
+    [self.timer invalidate];
+    self.timer = nil;
+    
+    [self dismissViewControllerAnimated:YES completion:^(void) {
+        
+
+    }];
 }
 
 @end
