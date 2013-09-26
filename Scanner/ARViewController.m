@@ -7,6 +7,7 @@
 //
 
 #import "ARViewController.h"
+#import "ARScanViewController.h"
 
 @interface ARViewController ()
 
@@ -17,13 +18,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+    // Do any additional setup after loading the view from its nib.
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+
+-(IBAction)scan {
+    ARScanViewController *scan = [[ARScanViewController alloc] initWithNibName:@"ARScanViewController" bundle:nil];
+    [self presentViewController:scan animated:NO completion:^(void) {
+        
+    }];
 }
 
 @end
